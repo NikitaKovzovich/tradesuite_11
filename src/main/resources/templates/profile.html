@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Профиль</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+<div th:insert="blocks/nav :: nav"></div>
+
+<main class="page catalog-page mt-5">
+    <section class="clean-block clean-catalog dark">
+        <div class="container">
+            <div class="block-heading text-center mb-5">
+                <h2 class="text-white">Профиль</h2>
+            </div>
+
+            <div class="text-center mb-5">
+                <a class="btn btn-primary rounded-5 w-25" href="/">Назад</a>
+            </div>
+
+            <div th:if="${message}" class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <div class="alert alert-light text-center" role="alert">
+                        <strong th:text="${message}"></strong>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col"></div>
+                <div class="col-6">
+                    <div class="text-center">
+                        <img th:src="${'/img/' + user.photo}" class="w-75 rounded-5">
+                    </div>
+                    <hr>
+                    <form action="/profile/photo" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col">
+                                <input type="file" required class="form-control rounded-5" name="photo" accept="image/*">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary rounded-5 w-100" type="submit">Обновить фото</button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <form action="/profile/fio" method="post">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" class="form-control rounded-5" required name="fio" placeholder="ФИО"
+                                       th:value="${user.fio}">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary rounded-5 w-100">Обновить ФИО</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col"></div>
+
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

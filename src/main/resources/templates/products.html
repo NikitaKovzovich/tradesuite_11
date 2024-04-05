@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Товары</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+<div th:insert="blocks/nav :: nav"></div>
+
+<main class="page catalog-page mt-5">
+    <section class="clean-block clean-catalog dark">
+        <div class="container">
+            <div class="block-heading text-center mb-5">
+                <h2 class="text-white">Товары</h2>
+            </div>
+
+            <div class="text-center mb-5">
+                <a class="btn btn-primary rounded-5 w-25 mx-2" href="/">Назад</a>
+                <a th:if="${role == 'ADMIN'}" class="btn btn-success rounded-5 w-25 mx-2"
+                   href="/products/add">Добавить</a>
+            </div>
+
+            <form action="/products/search" method="get" class="mb-5">
+                <div class="row">
+                    <div class="col-auto">
+                        <a href="/products" class="btn btn-secondary rounded-5">Сбросить</a>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control rounded-5" name="name" placeholder="Наименование"
+                               th:value="${name}">
+                    </div>
+                    <div class="col">
+                        <select name="categoryId" required class="form-select rounded-5">
+                            <option th:each="i : ${categories}" th:value="${i.id}" th:label="${i.name}"
+                                    th:selected="${i.id == categoryId}"></option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary rounded-5" type="submit">Поиск</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row">
+                <div th:each="i : ${products}" class="col-3 mb-2">
+                    <div class="text-center">
+                        <a th:href="${'/products/' + i.id}">
+                            <img th:src="${'/img/' + i.photo}" style="max-width: 100%;max-height: 250px"
+                                 class="rounded-5">
+                        </a>
+                    </div>
+                    <p class="fs-4 text-center mb-1" th:text="${i.name}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Категория: ' + i.category.name}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Цена: ' + i.price}"></p>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+</main>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

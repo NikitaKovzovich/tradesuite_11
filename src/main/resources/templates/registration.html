@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Регистрация</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+
+<div th:insert="blocks/nav :: nav"></div>
+
+<main class="page login-page mt-5">
+    <section class="clean-block clean-form dark">
+        <div class="container">
+            <div class="block-heading text-center mb-5">
+                <h2 class="text-white">Регистрация</h2>
+            </div>
+
+            <div th:if="${message}" class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <div class="alert alert-light text-center" role="alert">
+                        <strong th:text="${message}"></strong>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <form method="post" action="/reg">
+                        <div class="mb-3">
+                            <input class="form-control rounded-5" type="text" placeholder="ФИО" required name="fio">
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control rounded-5" type="text" placeholder="Логин" required name="username">
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control rounded-5" type="password" placeholder="Пароль" required name="password">
+                        </div>
+                        <button class="btn btn-primary rounded-5 w-100" type="submit">Регистрация</button>
+                    </form>
+                </div>
+                <div class="col"></div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+
+</body>
+
+</html>

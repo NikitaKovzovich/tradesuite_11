@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>История</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+<div th:insert="blocks/nav :: nav"></div>
+
+<main class="page catalog-page mt-5">
+    <section class="clean-block clean-catalog dark">
+        <div class="container">
+            <div class="block-heading text-center mb-5">
+                <h2 class="text-white">История</h2>
+            </div>
+
+            <div class="text-center mb-5">
+                <a class="btn btn-primary rounded-5 w-25 mx-2" href="/">Назад</a>
+            </div>
+
+            <div class="row">
+                <div th:each="i : ${applications}" class="col-3 mb-2">
+                    <div class="text-center">
+                        <a th:href="${'/products/' + i.product.id}">
+                            <img th:src="${'/img/' + i.product.photo}" style="max-width: 100%;max-height: 250px"
+                                 class="rounded-5">
+                        </a>
+                    </div>
+                    <p class="fs-4 text-center mb-1" th:text="${i.product.name}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Статус: ' + i.status.name}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Цена: ' + i.price}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Количество: ' + i.quantity}"></p>
+                    <a th:if="${i.status.name() == 'NOT_CONFIRMED'}" th:href="${'/history/' + i.id + '/delete'}"
+                       class="btn btn-danger rounded-5 w-100 mt-1">Отклонить</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

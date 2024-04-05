@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Категории</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+<div th:insert="blocks/nav :: nav"></div>
+
+<main class="page catalog-page mt-5">
+    <section class="clean-block clean-catalog dark">
+        <div class="container">
+            <div class="block-heading text-center mb-5">
+                <h2 class="text-white">Категории</h2>
+            </div>
+
+            <div class="text-center mb-5">
+                <a class="btn btn-primary rounded-5 w-25" href="/">Назад</a>
+            </div>
+
+            <form action="/category/add" method="post">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" required class="form-control rounded-5" name="name"
+                               placeholder="Наименование">
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary rounded-5">Добавить</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <form th:each="i : ${categories}" th:action="${'/category/' + i.id + '/edit'}" method="post" class="mb-2">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" required class="form-control rounded-5" name="name"
+                               placeholder="Наименование" th:value="${i.name}">
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary rounded-5">Обновить</button>
+                    </div>
+                    <div class="col-auto">
+                        <a th:href="${'/category/' + i.id + '/delete'}" class="btn btn-danger rounded-5">Удалить</a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </section>
+</main>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

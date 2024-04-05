@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${product.name}"></title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+<div th:insert="blocks/nav :: nav"></div>
+
+<main class="page catalog-page mt-5">
+    <section class="clean-block clean-catalog dark">
+        <div class="container">
+            <div class="block-heading text-center mb-5">
+                <h2 class="text-white" th:text="${product.name}"></h2>
+            </div>
+
+            <div class="text-center mb-5">
+                <a class="btn btn-primary rounded-5 w-25 mx-2" href="/products">Назад</a>
+                <a th:if="${role == 'ADMIN'}" class="btn btn-success rounded-5 w-25 mx-2"
+                   th:href="${'/products/' + product.id + '/edit'}">Обновить</a>
+                <a th:if="${role == 'ADMIN'}" class="btn btn-danger rounded-5 w-25 mx-2"
+                   th:href="${'/products/' + product.id + '/delete'}">Удалить</a>
+            </div>
+
+            <div th:if="${message}" class="row">
+                <div class="col"></div>
+                <div class="col-6">
+                    <div class="alert alert-primary text-center text-white" role="alert">
+                        <strong th:text="${message}"></strong>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-4 text-center">
+                    <img th:src="${'/img/' + product.photo}" style="max-width: 100%;max-height: 400px"
+                         class="rounded-5">
+                </div>
+                <div class="col">
+                    <form th:if="${role == 'USER'}" th:action="${'/products/' + product.id + '/app'}" method="post"
+                          class="mb-3">
+                        <div class="row">
+                            <div class="col">
+                                <input type="number" required class="form-control rounded-5" name="quantity"
+                                       placeholder="Количество">
+                            </div>
+                            <div class="col">
+                                <input type="text" required class="form-control rounded-5" name="contact"
+                                       placeholder="Контактные данные">
+                            </div>
+                            <div class="col">
+                                <input type="text" required class="form-control rounded-5" name="address"
+                                       placeholder="Адрес доставки">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary rounded-5">Оформить</button>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="fs-4 mb-1" th:text="${'Категория: ' + product.category.name}"></p>
+                    <p class="fs-4 mb-1" th:text="${'Цена: ' + product.price}"></p>
+                    <p class="fs-4 mb-1" th:text="${'Дата производства: ' + product.date}"></p>
+                    <p class="fs-4 mb-1" th:text="${'Срок гарантии: ' + product.term + ' м.'}"></p>
+                    <p class="fs-4 mb-1" th:text="${'Страна производства: ' + product.origin}"></p>
+                    <p class="fs-4 mb-1" th:text="${'Фирма производства: ' + product.firm}"></p>
+                    <p class="fs-5 mb-1" align="justify" th:text="${'Описание: ' + product.description}"></p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

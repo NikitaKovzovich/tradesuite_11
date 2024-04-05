@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Заявки</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+<div th:insert="blocks/nav :: nav"></div>
+
+<main class="page catalog-page mt-5">
+    <section class="clean-block clean-catalog dark">
+        <div class="container">
+            <div class="block-heading text-center mb-5">
+                <h2 class="text-white">Заявки</h2>
+            </div>
+
+            <div class="text-center mb-5">
+                <a class="btn btn-primary rounded-5 w-25 mx-2" href="/">Назад</a>
+            </div>
+
+            <div th:if="${message}" class="row">
+                <div class="col"></div>
+                <div class="col-6">
+                    <div class="alert alert-primary text-center text-white" role="alert">
+                        <strong th:text="${message}"></strong>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row">
+                <div th:each="i : ${applications}" class="col-3 mb-2">
+                    <div class="text-center">
+                        <img th:src="${'/img/' + i.product.photo}" style="max-width: 100%;max-height: 250px"
+                             class="rounded-5">
+                    </div>
+                    <p class="fs-4 text-center mb-1" th:text="${i.product.name}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Статус: ' + i.status.name}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Цена: ' + i.price}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Количество: ' + i.quantity}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Заказчик: ' + i.owner.fio}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Контактные данные: ' + i.contact}"></p>
+                    <p class="fs-5 mb-1" th:text="${'Адрес: ' + i.address}"></p>
+                    <div th:if="${role == 'ADMIN'}">
+                        <a th:if="${i.status.name() == 'NOT_CONFIRMED'}"
+                           th:href="${'/applications/' + i.id + '/assembly'}"
+                           class="btn btn-primary rounded-5 w-100 mt-1">Подтвердить</a>
+                    </div>
+                    <div th:if="${role == 'MANAGER'}">
+                        <a th:if="${i.status.name() == 'ASSEMBLY'}" th:href="${'/applications/' + i.id + '/packed'}"
+                           class="btn btn-primary rounded-5 w-100 mt-1">Собрано</a>
+                        <a th:if="${i.status.name() == 'PACKED'}" th:href="${'/applications/' + i.id + '/delivery'}"
+                           class="btn btn-primary rounded-5 w-100 mt-1">Упаковано</a>
+                        <a th:if="${i.status.name() == 'IN_DELIVERY'}"
+                           th:href="${'/applications/' + i.id + '/delivered'}"
+                           class="btn btn-primary rounded-5 w-100 mt-1">Доставлено</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

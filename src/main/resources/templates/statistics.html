@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Аналитика</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+<div th:insert="blocks/nav :: nav"></div>
+
+<main class="page catalog-page mt-5">
+    <section class="clean-block clean-catalog dark">
+        <div class="container">
+            <div class="block-heading text-center mb-5">
+                <h2 class="text-white">Аналитика</h2>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-primary rounded-5 w-100" href="/">Назад</a>
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary rounded-5 w-100" onclick="generatePDF()">PDF</button>
+                </div>
+            </div>
+            <hr>
+            <div id="drawProductIncome" style="height: 500px"></div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <div id="drawCategoryIncome" style="height: 400px"></div>
+                </div>
+                <div class="col">
+                    <div id="drawCategoryQuantity" style="height: 400px"></div>
+                </div>
+            </div>
+            <hr>
+            <div id="generatePDF" class="bg-white text-dark p-2 rounded-3 mb-5">
+                <div class="row mb-2 text-center fs-4">
+                    <div class="col"><span>Наименование</span></div>
+                    <div class="col"><span>Категория</span></div>
+                    <div class="col"><span>Продано</span></div>
+                    <div class="col"><span>Прибыль</span></div>
+                </div>
+                <div th:each="i : ${products}" class="row mb-2 fs-5">
+                    <div class="col text-center"><span th:text="${i.name}"></span></div>
+                    <div class="col text-center"><span th:text="${i.category.name}"></span></div>
+                    <div class="col text-end"><span th:text="${i.incomeQuantity}"></span></div>
+                    <div class="col text-end"><span th:text="${i.income}"></span></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    var incomeString = /*[[${incomeString}]]*/ [];
+    var incomeFloat = /*[[${incomeFloat}]]*/ [];
+    var categoryString = /*[[${categoryString}]]*/ [];
+    var categoryFloat = /*[[${categoryFloat}]]*/ [];
+    var categoryInt = /*[[${categoryInt}]]*/ [];
+
+    function generatePDF() {
+        html2pdf(document.getElementById('generatePDF'));
+    }
+</script>
+<script src="/js/stats.js"></script>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

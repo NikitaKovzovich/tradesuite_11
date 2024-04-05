@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Добро пожаловать!</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+<nav th:fragment="nav" class="navbar navbar-expand-lg bg-primary">
+    <div class="container">
+        <a th:if="${navName}" class="navbar-brand" href="/" th:text="${'TradeSuite | ' + navName}"></a>
+        <a th:unless="${navName}" class="navbar-brand" href="#" th:text="${'TradeSuite | '}"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto ms-auto">
+
+            </ul>
+            <ul class="navbar-nav">
+                <li th:if="${role == 'NOT'}" class="nav-item"><a class="btn btn-light rounded-5 fs-5 mx-2" href="/login">Вход</a></li>
+                <li th:if="${role == 'NOT'}" class="nav-item"><a class="btn btn-light rounded-5 fs-5" href="/reg">Регистрация</a></li>
+                <li th:if="${role != 'NOT'}" class="nav-item"><a class="btn btn-light rounded-5 fs-5" href="/logout">Выход</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="page catalog-page mt-5">
+    <section class="clean-block clean-catalog dark">
+        <div class="container">
+            <div class="block-heading mb-5">
+                <h2 class="text-white">Добро пожаловать!</h2>
+            </div>
+
+            <div th:if="${role == 'ADMIN'}">
+                <div class="row mb-5">
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative position-relative">
+                        <p class="fs-4 mb-2">Профиль</p>
+                        <p class="fs-6 mb-1">- Управление профилем</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle position-absolute top-100 start-50 translate-middle"
+                               href="/profile">Перейти</a>
+                        </div>
+                    </div>
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative">
+                        <p class="fs-4 mb-2">Пользователи</p>
+                        <p class="fs-6 mb-1">- Управление пользователями</p>
+                        <p class="fs-6 mb-1">- Управление ролями</p>
+                        <p class="fs-6 mb-1">- Управление отделами</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle"
+                               href="/users">Перейти</a>
+                        </div>
+                    </div>
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative">
+                        <p class="fs-4 mb-2">Аналитика</p>
+                        <p class="fs-6 mb-1">- Просмотр данных</p>
+                        <p class="fs-6 mb-1">- Генерация отчета</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle"
+                               href="/stats">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative">
+                        <p class="fs-4 mb-2">Категории</p>
+                        <p class="fs-6 mb-1">- Просмотр</p>
+                        <p class="fs-6 mb-1">- Редактирование</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle"
+                               href="/category">Перейти</a>
+                        </div>
+                    </div>
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative">
+                        <p class="fs-4 mb-2">Товары</p>
+                        <p class="fs-6 mb-1">- Просмотр</p>
+                        <p class="fs-6 mb-1">- Редактирование</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle"
+                               href="/products">Перейти</a>
+                        </div>
+                    </div>
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative">
+                        <p class="fs-4 mb-2">Заявки</p>
+                        <p class="fs-6 mb-1">- Просмотр</p>
+                        <p class="fs-6 mb-1">- Обработка</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle"
+                               href="/applications">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${role == 'MANAGER'}">
+                <div class="row mb-5">
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative position-relative">
+                        <p class="fs-4 mb-2">Профиль</p>
+                        <p class="fs-6 mb-1">- Управление профилем</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle position-absolute top-100 start-50 translate-middle"
+                               href="/profile">Перейти</a>
+                        </div>
+                    </div>
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative">
+                        <p class="fs-4 mb-2">Заявки</p>
+                        <p class="fs-6 mb-1">- Обработка</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle"
+                               href="/applications">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${role == 'USER'}">
+                <div class="row mb-5">
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative position-relative">
+                        <p class="fs-4 mb-2">Профиль</p>
+                        <p class="fs-6 mb-1">- Управление профилем</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle position-absolute top-100 start-50 translate-middle"
+                               href="/profile">Перейти</a>
+                        </div>
+                    </div>
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative">
+                        <p class="fs-4 mb-2">Товары</p>
+                        <p class="fs-6 mb-1">- Просмотр</p>
+                        <p class="fs-6 mb-1">- Оформление заявки</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle"
+                               href="/products">Перейти</a>
+                        </div>
+                    </div>
+                    <div class="col bg-primary rounded-4 p-3 m-2 position-relative">
+                        <p class="fs-4 mb-2">История</p>
+                        <p class="fs-6 mb-1">- Просмотр</p>
+                        <div class="text-center">
+                            <br>
+                            <a class="btn btn-secondary rounded-5 w-75 position-absolute top-100 start-50 translate-middle"
+                               href="/history">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d150506.04402794468!2d27.42822198470969!3d53.88452667454202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dbcfd35b1e6ad3%3A0xb61b853ddb570d9!2z0JzQuNC90YHQuiwg0JzQuNC90YHQutCw0Y8g0L7QsdC70LDRgdGC0Yw!5e0!3m2!1sru!2sby!4v1712140953699!5m2!1sru!2sby"
+                        width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade" class="rounded-5"></iframe>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Добавить</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body>
+<div th:insert="blocks/nav :: nav"></div>
+
+<main class="page catalog-page mt-5">
+    <section class="clean-block clean-catalog dark">
+        <div class="container">
+            <div class="block-heading text-center mb-5">
+                <h2 class="text-white">Добавить</h2>
+            </div>
+
+            <div class="text-center mb-5">
+                <a class="btn btn-primary rounded-5 w-50 mx-2" href="/products">Назад</a>
+            </div>
+
+            <div th:if="${message}" class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <div class="alert alert-light text-center" role="alert">
+                        <strong th:text="${message}"></strong>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <form action="/products/add" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-6 mb-2">
+                        <input type="text" required class="form-control rounded-5" name="name"
+                               placeholder="Наименование">
+                    </div>
+                    <div class="col-6 mb-2">
+                        <input type="number" required class="form-control rounded-5" name="price"
+                               placeholder="Цена" min="0.01" step="0.01">
+                    </div>
+                    <div class="col-6 mb-2">
+                        <select name="categoryId" required class="form-select rounded-5">
+                            <option th:each="i : ${categories}" th:value="${i.id}" th:label="${i.name}"></option>
+                        </select>
+                    </div>
+                    <div class="col-6 mb-2">
+                        <input type="file" required class="form-control rounded-5" name="photo" accept="image/*">
+                    </div>
+                    <div class="col-6 mb-2">
+                        <input type="date" required class="form-control rounded-5" name="date">
+                    </div>
+                    <div class="col-6 mb-2">
+                        <input type="number" required class="form-control rounded-5" name="term"
+                               placeholder="Срок гарантии (м.)" min="1" step="1">
+                    </div>
+                    <div class="col-6 mb-2">
+                        <input type="text" required class="form-control rounded-5" name="origin"
+                               placeholder="Страна производства">
+                    </div>
+                    <div class="col-6 mb-2">
+                        <input type="text" required class="form-control rounded-5" name="firm"
+                               placeholder="Фирма производитель">
+                    </div>
+                    <div class="col-12 mb-2">
+                        <input type="text" required class="form-control rounded-5" name="description"
+                               placeholder="Описание">
+                    </div>
+                    <div class="col-12 mb-2">
+                        <button class="btn btn-primary rounded-5 w-100" type="submit">Добавить</button>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </section>
+</main>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
