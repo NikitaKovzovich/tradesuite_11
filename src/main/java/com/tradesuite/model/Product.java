@@ -50,6 +50,8 @@ public class Product implements Serializable {
         this.category = category;
     }
 
+
+
     public void set(String name, String date, int term, String origin, String firm, float price, String description, Category category) {
         this.name = name;
         this.date = date;
@@ -74,4 +76,6 @@ public class Product implements Serializable {
             return i;
         }, Integer::sum);
     }
+
+
 }

@@ -32,7 +32,7 @@ public class Main {
         model.addAttribute("user", getUser());
     }
 
-    protected AppUser getUser() {
+    public AppUser getUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if ((!(auth instanceof AnonymousAuthenticationToken)) && auth != null) {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
