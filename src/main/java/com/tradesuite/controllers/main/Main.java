@@ -27,7 +27,7 @@ public class Main {
     @Value("${upload.img}")
     protected String uploadImg;
 
-    protected void getCurrentUserAndRole(Model model) {
+    public void getCurrentUserAndRole(Model model) {
         model.addAttribute("role", getRole());
         model.addAttribute("user", getUser());
     }

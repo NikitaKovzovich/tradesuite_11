@@ -78,4 +78,9 @@ public class Product implements Serializable {
     }
 
 
+    public void setIncome(int i) {
+    }
+
+    public void setId(Long id) {
+    }
 }

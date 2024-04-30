@@ -1,13 +1,17 @@
 package com.tradesuite.controllers;
+
 import com.tradesuite.model.AppUser;
 import com.tradesuite.model.Application;
 import com.tradesuite.model.enums.ApplicationStatus;
+import com.tradesuite.model.enums.Department;
+import com.tradesuite.model.enums.Role;
 import com.tradesuite.repo.ApplicationRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Sort;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
@@ -15,13 +19,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-public class ApplicationControllerTest {
+
+class ApplicationControllerTest {
 
     @Mock
-    private ApplicationRepo applicationRepository;
+    private ApplicationRepo applicationRepo;
 
     @InjectMocks
     private ApplicationController applicationController;
+
+    @Mock
+    private Model model;
 
     @BeforeEach
     void setUp() {
@@ -29,72 +37,139 @@ public class ApplicationControllerTest {
     }
 
     @Test
-    void testApplications() {
-        Model model = mock(Model.class);
+    void testApplications_Admin() {
         AppUser user = new AppUser();
-        when(applicationRepository.findAll()).thenReturn(new ArrayList<>());
-        when(applicationController.getUser()).thenReturn(user);
+        user.setRole(Role.valueOf("ADMIN"));
+
+        List<Application> applications = new ArrayList<>();
+        when(applicationRepo.findAll(Sort.by("id"))).thenReturn(applications);
 
         String viewName = applicationController.applications(model);
-
         assertEquals("applications", viewName);
-        verify(applicationController, times(1)).getUser();
-        verify(applicationRepository, times(1)).findAll();
-        verify(model, times(1)).addAttribute(eq("applications"), any());
+
+        verify(model).addAttribute("applications", applications);
+        verify(model).addAttribute("message", "Нет заявок для обработки");
     }
+
+    @Test
+    void testApplications_Manager_Assembling() {
+        AppUser user = new AppUser();
+        user.setRole(Role.valueOf("MANAGER"));
+        user.setDepartment(Department.valueOf("ASSEMBLING"));
+
+        List<Application> applications = new ArrayList<>();
+        when(applicationRepo.findAllByStatus(ApplicationStatus.ASSEMBLY)).thenReturn(applications);
+
+        String viewName = applicationController.applications(model);
+        assertEquals("applications", viewName);
+
+        verify(model).addAttribute("applications", applications);
+        verify(model, never()).addAttribute("message", "Нет заявок для обработки");
+    }
+
+    @Test
+    void testApplications_Manager_Packaging() {
+        AppUser user = new AppUser();
+        user.setRole(Role.valueOf("MANAGER"));
+        user.setDepartment(Department.valueOf("PACKAGING"));
+
+        List<Application> applications = new ArrayList<>();
+        when(applicationRepo.findAllByStatus(ApplicationStatus.PACKED)).thenReturn(applications);
+
+        String viewName = applicationController.applications(model);
+        assertEquals("applications", viewName);
+
+        verify(model).addAttribute("applications", applications);
+        verify(model, never()).addAttribute("message", "Нет заявок для обработки");
+    }
+
+    @Test
+    void testApplications_Manager_Delivery() {
+        AppUser user = new AppUser();
+        user.setRole(Role.valueOf("MANAGER"));
+        user.setDepartment(Department.valueOf("DELIVERY"));
+
+        List<Application> applications = new ArrayList<>();
+        when(applicationRepo.findAllByStatus(ApplicationStatus.IN_DELIVERY)).thenReturn(applications);
+
+        String viewName = applicationController.applications(model);
+        assertEquals("applications", viewName);
+
+        verify(model).addAttribute("applications", applications);
+        verify(model, never()).addAttribute("message", "Нет заявок для обработки");
+    }
+
     @Test
     void testAssembly() {
-        Model model = mock(Model.class);
         Long id = 1L;
         Application application = new Application();
-        when(applicationRepository.getReferenceById(id)).thenReturn(application);
+        when(applicationRepo.getReferenceById(id)).thenReturn(application);
 
         String viewName = applicationController.assembly(model, id);
-
         assertEquals("applications", viewName);
-        verify(applicationRepository, times(1)).save(application);
-        verify(model, times(1)).addAttribute(eq("message"), eq("Заявка успешно подтверждена"));
+
+        assertEquals(ApplicationStatus.ASSEMBLY, application.getStatus());
+        verify(applicationRepo).save(application);
+        verify(model).addAttribute("message", "Заявка успешно подтверждена");
     }
 
     @Test
     void testPacked() {
-        Model model = mock(Model.class);
         Long id = 1L;
+        String redirectUrl = "redirect:/applications";
         Application application = new Application();
-        when(applicationRepository.getReferenceById(id)).thenReturn(application);
+        application.setStatus(ApplicationStatus.PACKED);
+        when(applicationRepo.getReferenceById(id)).thenReturn(application);
 
         String viewName = applicationController.packed(model, id);
+        assertEquals(redirectUrl, viewName);
 
-        assertEquals("applications", viewName);
-        verify(applicationRepository, times(1)).save(application);
-        verify(model, times(1)).addAttribute(eq("message"), eq("Заявка успешно собрана"));
+        verify(applicationRepo).save(application);
+        verify(model).addAttribute("message", "Заявка успешно собрана");
     }
 
     @Test
     void testDelivery() {
-        Model model = mock(Model.class);
         Long id = 1L;
+        String redirectUrl = "redirect:/applications";
         Application application = new Application();
-        when(applicationRepository.getReferenceById(id)).thenReturn(application);
+        application.setStatus(ApplicationStatus.IN_DELIVERY);
+        when(applicationRepo.getReferenceById(id)).thenReturn(application);
 
         String viewName = applicationController.delivery(model, id);
+        assertEquals(redirectUrl, viewName);
 
-        assertEquals("applications", viewName);
-        verify(applicationRepository, times(1)).save(application);
-        verify(model, times(1)).addAttribute(eq("message"), eq("Заявка успешно упакована"));
+        verify(applicationRepo).save(application);
+        verify(model).addAttribute("message", "Заявка успешно упакована");
     }
 
     @Test
     void testDelivered() {
-        Model model = mock(Model.class);
         Long id = 1L;
+        String redirectUrl = "redirect:/applications";
         Application application = new Application();
-        when(applicationRepository.getReferenceById(id)).thenReturn(application);
+        application.setStatus(ApplicationStatus.DELIVERED);
+        when(applicationRepo.getReferenceById(id)).thenReturn(application);
 
         String viewName = applicationController.delivered(model, id);
+        assertEquals(redirectUrl, viewName);
 
-        assertEquals("applications", viewName);
-        verify(applicationRepository, times(1)).save(application);
-        verify(model, times(1)).addAttribute(eq("message"), eq("Заявка успешно доставлена"));
+        verify(applicationRepo).save(application);
+        verify(model).addAttribute("message", "Заявка успешно доставлена");
     }
+    @Test
+    void testApplicationsEmptyList() {
+        List<Application> emptyApplications = new ArrayList<>();
+        when(applicationRepo.findAll(Sort.by("id"))).thenReturn(emptyApplications);
+        AppUser user = new AppUser();
+        when(applicationController.getUser()).thenReturn(user);
+
+        String viewName = applicationController.applications(model);
+        assertEquals("applications", viewName);
+
+        verify(model).addAttribute("applications", emptyApplications);
+        verify(model).addAttribute("message", "Нет заявок для обработки");
+    }
+
+
 }

@@ -42,4 +42,10 @@ public class Category implements Serializable {
     public int getIncomeQuantity() {
         return products.stream().reduce(0, (i, product) -> i + product.getIncomeQuantity(), Integer::sum);
     }
+
+    public void setIncome(int i) {
+    }
+
+    public void setIncomeQuantity(int i) {
+    }
 }

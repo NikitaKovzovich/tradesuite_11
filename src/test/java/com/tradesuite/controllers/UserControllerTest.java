@@ -9,9 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserControllerTest {
 
@@ -21,9 +27,12 @@ class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
+    private MockMvc mockMvc;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
     @Test
@@ -61,5 +70,33 @@ class UserControllerTest {
 
         assertEquals(redirectUrl, viewName);
         verify(userRepo, times(1)).deleteById(id);
+    }
+
+    @Test
+    void testEdit1() throws Exception {
+        Long id = 1L;
+        Role role = Role.MANAGER;
+        Department department = Department.PACKAGING;
+
+        // Prepare a mock AppUser object
+        AppUser user = new AppUser();
+        user.setId(id);
+
+        // Mock the behavior of userRepo.save(user)
+        when(userRepo.save(user)).thenReturn(user);
+
+        // Perform the POST request
+        mockMvc.perform(post("/users/{id}/edit", id)
+                        .param("role", role.name())
+                        .param("department", department.name()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
+
+        // Verify that setRole and setDepartment methods are called with the correct parameters
+        verify(user).setRole(role);
+        verify(user).setDepartment(department);
+
+        // Verify that userRepo.save(user) is invoked
+        verify(userRepo).save(user);
     }
 }

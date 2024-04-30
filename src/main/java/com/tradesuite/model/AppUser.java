@@ -49,6 +49,15 @@ public class AppUser implements UserDetails, Serializable {
         this.fio = fio;
     }
 
+    public AppUser(String admin, String admin1, String admin2, Object o) {
+    }
+
+    public AppUser(Role manager, Department assembling) {
+    }
+
+    public AppUser(Role admin) {
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -76,5 +85,8 @@ public class AppUser implements UserDetails, Serializable {
 
     private PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
+    }
+
+    public void setId(Long id) {
     }
 }
